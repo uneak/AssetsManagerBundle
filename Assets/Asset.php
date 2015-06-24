@@ -48,4 +48,8 @@
 			return $this->options['dependencies'];
 		}
 
+		public function getGroup() {
+			return $this->options['group'];
+		}
+
 	}
