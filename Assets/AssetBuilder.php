@@ -22,6 +22,7 @@
             $object->configureOptions($resolver);
             $options = $resolver->resolve($parameters);
             $this->_addAssetToArray($id, new AssetItem($object, $options));
+			return $this;
 		}
 
 

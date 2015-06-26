@@ -6,29 +6,28 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Js;
+	namespace Uneak\AssetsManagerBundle\Assets\Js;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetExternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetExternal;
 
 	class AssetExternalJs extends AssetExternal {
 
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
 
         public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
+
+			$resolver->setDefined(array('src', 'charset', 'language', 'defer', 'event', 'for'));
 
 			$resolver->setRequired('type');
 
 			$resolver->setDefaults(array(
 				"type" => "text/javascript",
 				"tag" => "script",
-				"group" => "AssetExternalJs",
+				"category" => "AssetExternalJs",
 			));
 
-			$resolver->setDefined(array('src', 'charset', 'language', 'defer', 'event', 'for'));
+
 		}
 
 
@@ -44,7 +43,7 @@
 				}
 			}
 
-			$render[] = '/>';
+			$render[] = '></' . $options['tag'] . '>';
 
 			return implode(' ', $render);
 		}

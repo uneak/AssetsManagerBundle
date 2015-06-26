@@ -29,10 +29,12 @@
 			);
 		}
 
-		public function renderAssetsFunction($group = null) {
+		public function renderAssetsFunction($category = null) {
 			$string = "";
-			$assets = $this->assetsManager->getAssetsArray($group);
+			$assets = $this->assetsManager->getAssetsArray($category);
+
 			foreach ($assets as $asset) {
+
 				if (is_array($asset)) {
 					foreach ($asset as $assetItem) {
 						$string .= $assetItem->getObject()->render($this->twig, $assetItem->getOptions());

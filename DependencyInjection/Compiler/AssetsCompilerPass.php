@@ -18,7 +18,7 @@ class AssetsCompilerPass implements CompilerPassInterface {
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 $definition->addMethodCall(
-					'addAssetsContainer', array(new Reference($id))
+					'addAssetsComponent', array(new Reference($id))
                 );
             }
         }

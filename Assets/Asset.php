@@ -12,16 +12,12 @@
 
 	abstract class Asset implements AssetInterface {
 
-		protected $options;
-
-		public function __construct() {
-		}
-
 		public function configureOptions(OptionsResolver $resolver) {
 
-			$resolver->setRequired(array('tag', 'group'));
+			$resolver->setDefined(array('tag', 'type', 'category', 'dependencies', 'parameters'));
+			$resolver->setRequired(array('tag', 'category'));
 
-			$resolver->setAllowedTypes('group', 'string');
+			$resolver->setAllowedTypes('category', 'string');
 			$resolver->setAllowedTypes('tag', 'string');
 			$resolver->setAllowedTypes('dependencies', 'array');
 
@@ -30,7 +26,7 @@
 				'parameters' => array(),
 			));
 
-			$resolver->setDefined(array('tag', 'type', 'group', 'dependencies', 'parameters'));
+
 
 		}
 
@@ -38,12 +34,5 @@
 			return '';
 		}
 
-		public function getDependencies() {
-			return $this->options['dependencies'];
-		}
-
-		public function getGroup() {
-			return $this->options['group'];
-		}
 
 	}

@@ -1,78 +1,72 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: marc
- * Date: 29/01/15
- * Time: 16:13
- */
+	/**
+	 * Created by PhpStorm.
+	 * User: marc
+	 * Date: 29/01/15
+	 * Time: 16:13
+	 */
 
-namespace Uneak\AssetsManagerBundle\Assets;
-
-
-class AssetsManager extends AssetsComponent
-{
+	namespace Uneak\AssetsManagerBundle\Assets;
 
 
-    public function getAssetsArray($group = null)
-    {
-        $builder = new AssetBuilder();
-        $this->processBuildAssets($builder);
-
-        $assets = $builder->getAssets($group);
-
-        $array = array();
-        foreach ($assets as $item) {
-            if (is_array($item)) {
-                foreach ($item as $assetItem) {
-                    if ($assetItem->getGroup() != $group) {
-                        unset($assetItem);
-                    }
-                }
-            } else {
-                if ($item->getGroup() != $group) {
-                    unset($assetItem);
-                }
-            }
-        }
+	class AssetsManager extends AssetsComponentNested {
 
 
-        $resolved = array();
-        foreach ($array as $key => $asset) {
-            $this->_resolveDependency($key, $array, $resolved);
-        }
-        return $resolved;
-    }
+		public function getAssetsArray($category = null) {
+			$builder = new AssetBuilder();
+			$this->processBuildAssets($builder);
+			$assets = $builder->getAssets();
 
-    private function _resolveDependency($key, &$array, &$resolved = array())
-    {
-        //			if (!isset($array[$key])) {
-        //				throw new NotFoundResourceException("L'asset ".$key." est manquante !");
-        //			}
+			foreach ($assets as $itemKey => $item) {
+				if (is_array($item)) {
+					foreach ($item as $assetItemKey => $assetItem) {
+						if ($assetItem->getCategory() != $category) {
+							unset($assets[$itemKey][$assetItemKey]);
+						}
+					}
+				} else {
+					if ($item->getCategory() != $category) {
+						unset($assets[$itemKey]);
+					}
+				}
+			}
 
-        if (isset($array[$key])) {
-            if (is_array($array[$key])) {
-                $dependencies = array();
-                foreach ($array[$key] as $asset) {
-                    $assetDependency = $asset->getDependencies();
-                    if ($assetDependency && count($assetDependency)) {
-                        $dependencies = array_merge($dependencies, $assetDependency);
-                    }
-                }
-            } else {
-                $dependencies = $array[$key]->getDependencies();
-            }
+			$resolved = array();
+			foreach ($assets as $key => $asset) {
+				$this->_resolveDependency($key, $assets, $resolved);
+			}
 
-            if ($dependencies) {
-                foreach ($dependencies as $depKey => $dependency) {
-                    $this->_resolveDependency($dependency, $array, $resolved);
-                }
-            }
+			return $resolved;
+		}
 
-            $resolved[$key] = $array[$key];
-            unset($array[$key]);
-        }
-    }
+		private function _resolveDependency($key, &$assets, &$resolved = array()) {
+			//			if (!isset($array[$key])) {
+			//				throw new NotFoundResourceException("L'asset ".$key." est manquante !");
+			//			}
+
+			if (isset($assets[$key])) {
+				if (is_array($assets[$key])) {
+					$dependencies = array();
+					foreach ($assets[$key] as $asset) {
+						$assetDependency = $asset->getDependencies();
+						if ($assetDependency && count($assetDependency)) {
+							$dependencies = array_merge($dependencies, $assetDependency);
+						}
+					}
+				} else {
+					$dependencies = $assets[$key]->getDependencies();
+				}
+
+				if ($dependencies) {
+					foreach ($dependencies as $depKey => $dependency) {
+						$this->_resolveDependency($dependency, $assets, $resolved);
+					}
+				}
+
+				$resolved[$key] = $assets[$key];
+				unset($assets[$key]);
+			}
+		}
 
 
-
-}
+	}

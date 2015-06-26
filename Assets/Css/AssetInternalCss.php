@@ -6,27 +6,25 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Css;
+	namespace Uneak\AssetsManagerBundle\Assets\Css;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetInternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
 
 	class AssetInternalCss extends AssetInternal {
-
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
 
         public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
+			$resolver->setDefined('media');
+
 			$resolver->setDefaults(array(
 				"type" => "text/css",
 				"tag" => "style",
-				"group" => "AssetInternalCss",
+				"category" => "AssetInternalCss",
 			));
 
-			$resolver->setDefined('media');
+
 		}
 
 
@@ -46,11 +44,12 @@
 				$render[] = $options['content'];
 				$render[] = '</' . $options['tag'] . '>';
 
-				return implode(' ', $render);
+
+				return $twig->render(implode(' ', $render), $options['parameters']);
 
 			} else if (isset($options['template'])) {
 
-				return $twig->render($options['content'], $options['parameters']);
+				return $twig->render($options['template'], $options['parameters']);
 
 			}
 

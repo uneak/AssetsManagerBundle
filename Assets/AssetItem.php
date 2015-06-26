@@ -32,8 +32,8 @@
             return $this->options;
         }
 
-        public function getGroup() {
-            return $this->options["group"];
+        public function getCategory() {
+            return $this->options["category"];
         }
 
         public function getDependencies() {

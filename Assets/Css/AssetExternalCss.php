@@ -6,19 +6,17 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Css;
+	namespace Uneak\AssetsManagerBundle\Assets\Css;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetExternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetExternal;
 
 	class AssetExternalCss extends AssetExternal {
 
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
-
         public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
+
+			$resolver->setDefined(array('rel', 'type', 'href', 'media', 'title'));
 
 			$resolver->setRequired('type');
 
@@ -26,10 +24,10 @@
 				"type" => "text/css",
 				"rel" => "stylesheet",
 				"tag" => "link",
-				"group" => "AssetExternalCss",
+				"category" => "AssetExternalCss",
 			));
 
-			$resolver->setDefined(array('rel', 'type', 'href', 'media', 'title'));
+
 		}
 
 		public function render(\Twig_Environment $twig, array $options) {

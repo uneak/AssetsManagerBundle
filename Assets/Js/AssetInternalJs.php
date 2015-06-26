@@ -6,16 +6,12 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Js;
+	namespace Uneak\AssetsManagerBundle\Assets\Js;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetInternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
 
 	class AssetInternalJs extends AssetInternal {
-
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
 
         public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
@@ -23,7 +19,7 @@
 			$resolver->setDefaults(array(
 				"type" => "text/javascript",
 				"tag" => "script",
-				"group" => "AssetInternalJs",
+				"category" => "AssetInternalJs",
 			));
 
 		}
@@ -45,11 +41,12 @@
 				$render[] = $options['content'];
 				$render[] = '</' . $options['tag'] . '>';
 
-				return implode(' ', $render);
+
+				return $twig->render(implode(' ', $render), $options['parameters']);
 
 			} else if (isset($options['template'])) {
 
-				return $twig->render($options['content'], $options['parameters']);
+				return $twig->render($options['template'], $options['parameters']);
 
 			}
 
