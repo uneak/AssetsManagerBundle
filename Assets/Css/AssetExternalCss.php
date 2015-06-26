@@ -17,13 +17,14 @@
 			parent::__construct($options);
 		}
 
-		protected function configureOptions(OptionsResolver $resolver) {
+        public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
 			$resolver->setRequired('type');
 
 			$resolver->setDefaults(array(
 				"type" => "text/css",
+				"rel" => "stylesheet",
 				"tag" => "link",
 				"group" => "AssetExternalCss",
 			));
@@ -31,15 +32,15 @@
 			$resolver->setDefined(array('rel', 'type', 'href', 'media', 'title'));
 		}
 
-		public function render(\Twig_Environment $twig) {
+		public function render(\Twig_Environment $twig, array $options) {
 			$render = array();
 
-			$render[] = '<' . $this->options['tag'];
+			$render[] = '<' . $options['tag'];
 
 			$params = array('href', 'rel', 'type', 'media');
 			foreach ($params as $param) {
-				if (isset($this->options[$param])) {
-					$render[] = $param . '="' . $this->options[$param] . '"';
+				if (isset($options[$param])) {
+					$render[] = $param . '="' . $options[$param] . '"';
 				}
 			}
 

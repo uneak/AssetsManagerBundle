@@ -17,7 +17,7 @@
 			parent::__construct($options);
 		}
 
-		protected function configureOptions(OptionsResolver $resolver) {
+        public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
 			$resolver->setDefined('class');

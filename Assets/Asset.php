@@ -8,22 +8,16 @@
 
 	namespace Uneak\AssetsManagerBundle\Assets;
 
+    use Symfony\Component\OptionsResolver\OptionsResolver;
 
-	use Symfony\Component\OptionsResolver\OptionsResolver;
-
-	abstract class Asset {
+	abstract class Asset implements AssetInterface {
 
 		protected $options;
 
-		public function __construct(array $options = array()) {
-
-			$resolver = new OptionsResolver();
-			$this->configureOptions($resolver);
-			$this->options = $resolver->resolve($options);
-
+		public function __construct() {
 		}
 
-		protected function configureOptions(OptionsResolver $resolver) {
+		public function configureOptions(OptionsResolver $resolver) {
 
 			$resolver->setRequired(array('tag', 'group'));
 
@@ -40,7 +34,7 @@
 
 		}
 
-		public function render(\Twig_Environment $twig) {
+		public function render(\Twig_Environment $twig, array $options) {
 			return '';
 		}
 
