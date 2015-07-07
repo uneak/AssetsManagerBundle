@@ -8,26 +8,16 @@
 
 	namespace Uneak\AssetsManagerBundle\Assets;
 
+    use Symfony\Component\OptionsResolver\OptionsResolver;
 
-	use Symfony\Component\OptionsResolver\OptionsResolver;
+	abstract class Asset implements AssetInterface {
 
-	abstract class Asset {
+		public function configureOptions(OptionsResolver $resolver) {
 
-		protected $options;
+			$resolver->setDefined(array('tag', 'type', 'category', 'dependencies', 'parameters'));
+			$resolver->setRequired(array('tag', 'category'));
 
-		public function __construct(array $options = array()) {
-
-			$resolver = new OptionsResolver();
-			$this->configureOptions($resolver);
-			$this->options = $resolver->resolve($options);
-
-		}
-
-		protected function configureOptions(OptionsResolver $resolver) {
-
-			$resolver->setRequired(array('tag', 'group'));
-
-			$resolver->setAllowedTypes('group', 'string');
+			$resolver->setAllowedTypes('category', 'string');
 			$resolver->setAllowedTypes('tag', 'string');
 			$resolver->setAllowedTypes('dependencies', 'array');
 
@@ -36,20 +26,13 @@
 				'parameters' => array(),
 			));
 
-			$resolver->setDefined(array('tag', 'type', 'group', 'dependencies', 'parameters'));
+
 
 		}
 
-		public function render(\Twig_Environment $twig) {
+		public function render(\Twig_Environment $twig, array $options) {
 			return '';
 		}
 
-		public function getDependencies() {
-			return $this->options['dependencies'];
-		}
-
-		public function getGroup() {
-			return $this->options['group'];
-		}
 
 	}

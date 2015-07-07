@@ -6,18 +6,14 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets;
+	namespace Uneak\AssetsManagerBundle\Assets;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
 	use Uneak\AssetsManagerBundle\Assets\Asset;
 
 	abstract class AssetExternal extends Asset {
 
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
-
-		protected function configureOptions(OptionsResolver $resolver) {
+        public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
 			$resolver->setDefined('class');

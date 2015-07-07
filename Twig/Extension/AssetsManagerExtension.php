@@ -29,16 +29,18 @@
 			);
 		}
 
-		public function renderAssetsFunction($group = null) {
+		public function renderAssetsFunction($category = null) {
 			$string = "";
-			$assets = $this->assetsManager->getAssets($group);
+			$assets = $this->assetsManager->getAssetsArray($category);
+
 			foreach ($assets as $asset) {
+
 				if (is_array($asset)) {
 					foreach ($asset as $assetItem) {
-						$string .= $assetItem->render($this->twig);
+						$string .= $assetItem->getObject()->render($this->twig, $assetItem->getOptions());
 					}
 				} else {
-					$string .= $asset->render($this->twig);
+					$string .= $asset->getObject()->render($this->twig, $asset->getOptions());
 				}
 			}
 

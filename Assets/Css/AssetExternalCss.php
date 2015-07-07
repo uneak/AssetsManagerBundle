@@ -6,40 +6,39 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Css;
+	namespace Uneak\AssetsManagerBundle\Assets\Css;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetExternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetExternal;
 
 	class AssetExternalCss extends AssetExternal {
 
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
-
-		protected function configureOptions(OptionsResolver $resolver) {
+        public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
+
+			$resolver->setDefined(array('rel', 'type', 'href', 'media', 'title'));
 
 			$resolver->setRequired('type');
 
 			$resolver->setDefaults(array(
 				"type" => "text/css",
+				"rel" => "stylesheet",
 				"tag" => "link",
-				"group" => "AssetExternalCss",
+				"category" => "AssetExternalCss",
 			));
 
-			$resolver->setDefined(array('rel', 'type', 'href', 'media', 'title'));
+
 		}
 
-		public function render(\Twig_Environment $twig) {
+		public function render(\Twig_Environment $twig, array $options) {
 			$render = array();
 
-			$render[] = '<' . $this->options['tag'];
+			$render[] = '<' . $options['tag'];
 
 			$params = array('href', 'rel', 'type', 'media');
 			foreach ($params as $param) {
-				if (isset($this->options[$param])) {
-					$render[] = $param . '="' . $this->options[$param] . '"';
+				if (isset($options[$param])) {
+					$render[] = $param . '="' . $options[$param] . '"';
 				}
 			}
 

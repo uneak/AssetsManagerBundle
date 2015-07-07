@@ -6,51 +6,50 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Css;
+	namespace Uneak\AssetsManagerBundle\Assets\Css;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetInternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
 
 	class AssetInternalCss extends AssetInternal {
 
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
-
-		protected function configureOptions(OptionsResolver $resolver) {
+        public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
+
+			$resolver->setDefined('media');
 
 			$resolver->setDefaults(array(
 				"type" => "text/css",
 				"tag" => "style",
-				"group" => "AssetInternalCss",
+				"category" => "AssetInternalCss",
 			));
 
-			$resolver->setDefined('media');
+
 		}
 
 
-		public function render(\Twig_Environment $twig) {
+		public function render(\Twig_Environment $twig, array $options) {
 
-			if (isset($this->options['content'])) {
+			if (isset($options['content'])) {
 
 				$render = array();
-				$render[] = '<' . $this->options['tag'];
+				$render[] = '<' . $options['tag'];
 				$params = array('type', 'media');
 				foreach ($params as $param) {
-					if (isset($this->options[$param])) {
-						$render[] = $param . '="' . $this->options[$param] . '"';
+					if (isset($options[$param])) {
+						$render[] = $param . '="' . $options[$param] . '"';
 					}
 				}
 				$render[] = '>';
-				$render[] = $this->options['content'];
-				$render[] = '</' . $this->options['tag'] . '>';
+				$render[] = $options['content'];
+				$render[] = '</' . $options['tag'] . '>';
 
-				return implode(' ', $render);
 
-			} else if (isset($this->options['template'])) {
+				return $twig->render(implode(' ', $render), $options['parameters']);
 
-				return $twig->render($this->options['content'], $this->options['parameters']);
+			} else if (isset($options['template'])) {
+
+				return $twig->render($options['template'], $options['parameters']);
 
 			}
 

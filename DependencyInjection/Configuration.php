@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('uneak_assets_manager');
+        $rootNode = $treeBuilder->root('uneak_assetsmanager');
 
         return $treeBuilder;
     }

@@ -7,10 +7,10 @@ services:
     uneak.assetsmanager:
         class: %uneak.assetsmanager.class%
 
-    uneak.admin.assets.twig.extension:
-        class: %uneak.admin.assets.twig.extension.class%
+    uneak.assetsmanager.twig.extension:
+        class: %uneak.assetsmanager.twig.extension.class%
         arguments:
-            - @uneak.admin.assets.manager
+            - @uneak.assetsmanager
             - @twig
         tags:
             - { name: twig.extension }

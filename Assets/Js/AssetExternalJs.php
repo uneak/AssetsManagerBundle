@@ -6,45 +6,44 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AdminBundle\Assets\Js;
+	namespace Uneak\AssetsManagerBundle\Assets\Js;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AdminBundle\Assets\AssetExternal;
+	use Uneak\AssetsManagerBundle\Assets\AssetExternal;
 
 	class AssetExternalJs extends AssetExternal {
 
-		public function __construct(array $options = array()) {
-			parent::__construct($options);
-		}
 
-		protected function configureOptions(OptionsResolver $resolver) {
+        public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
+
+			$resolver->setDefined(array('src', 'charset', 'language', 'defer', 'event', 'for'));
 
 			$resolver->setRequired('type');
 
 			$resolver->setDefaults(array(
 				"type" => "text/javascript",
 				"tag" => "script",
-				"group" => "AssetExternalJs",
+				"category" => "AssetExternalJs",
 			));
 
-			$resolver->setDefined(array('src', 'charset', 'language', 'defer', 'event', 'for'));
+
 		}
 
 
-		public function render(\Twig_Environment $twig) {
+		public function render(\Twig_Environment $twig, array $options) {
 			$render = array();
 
-			$render[] = '<' . $this->options['tag'];
+			$render[] = '<' . $options['tag'];
 
 			$params = array('src', 'type', 'class', 'charset', 'language', 'defer', 'event', 'for');
 			foreach ($params as $param) {
-				if (isset($this->options[$param])) {
-					$render[] = $param . '="' . $this->options[$param] . '"';
+				if (isset($options[$param])) {
+					$render[] = $param . '="' . $options[$param] . '"';
 				}
 			}
 
-			$render[] = '/>';
+			$render[] = '></' . $options['tag'] . '>';
 
 			return implode(' ', $render);
 		}
