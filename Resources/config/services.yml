@@ -12,8 +12,11 @@ services:
         arguments:
             - @uneak.assetsmanager
             - @twig
+            - @service_container
+
         tags:
             - { name: twig.extension }
+
 
     twig.stringloader:
         class: Twig_Loader_String

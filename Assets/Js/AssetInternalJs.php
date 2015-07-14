@@ -9,11 +9,12 @@
 	namespace Uneak\AssetsManagerBundle\Assets\Js;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
+	use Symfony\Component\Templating\Helper\CoreAssetsHelper;
 	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
 
 	class AssetInternalJs extends AssetInternal {
 
-        public function configureOptions(OptionsResolver $resolver) {
+		public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
 			$resolver->setDefaults(array(
@@ -25,7 +26,7 @@
 		}
 
 
-		public function render(\Twig_Environment $twig, array $options) {
+		public function render(\Twig_Environment $twig, CoreAssetsHelper $assetsHelper, array $options) {
 
 			if (isset($options['content'])) {
 

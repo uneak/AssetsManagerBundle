@@ -8,7 +8,8 @@
 
 	namespace Uneak\AssetsManagerBundle\Assets;
 
-    use Symfony\Component\OptionsResolver\OptionsResolver;
+	use Symfony\Component\OptionsResolver\OptionsResolver;
+	use Symfony\Component\Templating\Helper\CoreAssetsHelper;
 
 	abstract class Asset implements AssetInterface {
 
@@ -30,7 +31,7 @@
 
 		}
 
-		public function render(\Twig_Environment $twig, array $options) {
+		public function render(\Twig_Environment $twig, CoreAssetsHelper $assetsHelper, array $options) {
 			return '';
 		}
 

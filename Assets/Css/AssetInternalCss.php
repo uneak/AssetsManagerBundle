@@ -9,11 +9,12 @@
 	namespace Uneak\AssetsManagerBundle\Assets\Css;
 
 	use Symfony\Component\OptionsResolver\OptionsResolver;
+	use Symfony\Component\Templating\Helper\CoreAssetsHelper;
 	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
 
 	class AssetInternalCss extends AssetInternal {
 
-        public function configureOptions(OptionsResolver $resolver) {
+		public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
 			$resolver->setDefined('media');
@@ -28,7 +29,7 @@
 		}
 
 
-		public function render(\Twig_Environment $twig, array $options) {
+		public function render(\Twig_Environment $twig, CoreAssetsHelper $assetsHelper, array $options) {
 
 			if (isset($options['content'])) {
 
