@@ -6,16 +6,19 @@
 	use Twig_Extension;
 	use Twig_Function_Method;
 	use Uneak\AssetsManagerBundle\Assets\AssetsManager;
+    use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
 
-	class AssetsManagerExtension extends Twig_Extension {
+    class AssetsManagerExtension extends Twig_Extension {
 
 		private $twig;
 		private $environment;
 		private $assetsManager;
+        private $templatesManager;
 		private $container;
 
-		public function __construct(AssetsManager $assetsManager, $twig, ContainerInterface $container) {
+		public function __construct(AssetsManager $assetsManager, TemplatesManager $templatesManager, $twig, ContainerInterface $container) {
 			$this->assetsManager = $assetsManager;
+			$this->templatesManager = $templatesManager;
 			$this->twig = $twig;
 			$this->container = $container;
 		}
@@ -34,17 +37,17 @@
 
 		public function renderAssetsFunction($category = null) {
 			$string = "";
-			$assets = $this->assetsManager->getAssetsArray($category);
-			$assetsHelper = $this->container->get('templating.helper.assets');
+            $assets = $this->assetsManager->getAssetsArray($category);
+            $assetsHelper = $this->container->get('templating.helper.assets');
 
 			foreach ($assets as $asset) {
 
 				if (is_array($asset)) {
 					foreach ($asset as $assetItem) {
-						$string .= $assetItem->getObject()->render($this->twig, $assetsHelper, $assetItem->getOptions());
+						$string .= $assetItem->getObject()->render($this->twig, $assetsHelper, $this->templatesManager, $assetItem->getOptions());
 					}
 				} else {
-					$string .= $asset->getObject()->render($this->twig, $assetsHelper, $asset->getOptions());
+					$string .= $asset->getObject()->render($this->twig, $assetsHelper, $this->templatesManager, $asset->getOptions());
 				}
 			}
 

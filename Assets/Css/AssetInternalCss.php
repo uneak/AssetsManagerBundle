@@ -8,11 +8,12 @@
 
 	namespace Uneak\AssetsManagerBundle\Assets\Css;
 
-	use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Symfony\Component\Templating\Helper\CoreAssetsHelper;
+	use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
+    use Symfony\Component\OptionsResolver\OptionsResolver;
 	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
+    use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
 
-	class AssetInternalCss extends AssetInternal {
+    class AssetInternalCss extends AssetInternal {
 
 		public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
@@ -29,7 +30,7 @@
 		}
 
 
-		public function render(\Twig_Environment $twig, CoreAssetsHelper $assetsHelper, array $options) {
+		public function render(\Twig_Environment $twig, AssetsHelper $assetsHelper, TemplatesManager $templatesManager, array $options) {
 
 			if (isset($options['content'])) {
 
@@ -50,7 +51,8 @@
 
 			} else if (isset($options['template'])) {
 
-				return $twig->render($options['template'], $options['parameters']);
+                $template = ($templatesManager->has($options['template'])) ? $templatesManager->get($options['template']) : $options['template'];
+				return $twig->render($template, $options['parameters']);
 
 			}
 

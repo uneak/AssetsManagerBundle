@@ -11,6 +11,7 @@ services:
         class: %uneak.assetsmanager.twig.extension.class%
         arguments:
             - @uneak.assetsmanager
+            - @uneak.templatesmanager
             - @twig
             - @service_container
 

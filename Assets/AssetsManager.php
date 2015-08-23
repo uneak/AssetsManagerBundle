@@ -13,9 +13,10 @@
 
 
 		public function getAssetsArray($category = null) {
+
 			$builder = new AssetBuilder();
-			$this->processBuildAssets($builder);
-			$assets = $builder->getAssets();
+            $this->processBuildAssets($builder);
+            $assets = $builder->getAssets();
 
 			foreach ($assets as $itemKey => $item) {
 				if (is_array($item)) {
