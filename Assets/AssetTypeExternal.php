@@ -11,11 +11,13 @@
 	use Symfony\Component\OptionsResolver\OptionsResolver;
 	use Uneak\AssetsManagerBundle\Assets\Asset;
 
-	abstract class AssetInternal extends Asset {
+	abstract class AssetTypeExternal extends AssetType {
 
         public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
-			$resolver->setDefined(array('content', 'template'));
+
+			$resolver->setDefined('class');
 		}
+
 
 	}

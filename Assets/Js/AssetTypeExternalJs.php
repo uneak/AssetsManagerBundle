@@ -6,52 +6,54 @@
 	 * Time: 16:13
 	 */
 
-	namespace Uneak\AssetsManagerBundle\Assets\Css;
+	namespace Uneak\AssetsManagerBundle\Assets\Js;
 
 	use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
     use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AssetsManagerBundle\Assets\AssetExternal;
-    use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
+	use Uneak\AssetsManagerBundle\Assets\AssetTypeExternal;
+	use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
 
-    class AssetExternalCss extends AssetExternal {
+    class AssetTypeExternalJs extends AssetTypeExternal {
+
 
 		public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
 
-			$resolver->setDefined(array('rel', 'type', 'href', 'media', 'title'));
+			$resolver->setDefined(array('src', 'charset', 'language', 'defer', 'event', 'for'));
 
 			$resolver->setRequired('type');
 
 			$resolver->setDefaults(array(
-				"type" => "text/css",
-				"rel" => "stylesheet",
-				"tag" => "link",
-				"category" => "AssetExternalCss",
+				"type" => "text/javascript",
+				"tag" => "script",
+				"category" => "AssetExternalJs",
 			));
 
 
 		}
+
 
 		public function render(\Twig_Environment $twig, AssetsHelper $assetsHelper, TemplatesManager $templatesManager, array $options) {
 			$render = array();
 
 			$render[] = '<' . $options['tag'];
 
-			$params = array('href', 'rel', 'type', 'media');
+			$params = array('src', 'type', 'class', 'charset', 'language', 'defer', 'event', 'for');
 			foreach ($params as $param) {
 				if (isset($options[$param])) {
-					if ($param == 'href') {
+
+					if ($param == 'src') {
 						$render[] = $param . '="' . $assetsHelper->getUrl($options[$param]) . '"';
 					} else {
 						$render[] = $param . '="' . $options[$param] . '"';
 					}
+
 				}
 			}
 
-			$render[] = '/>';
+			$render[] = '></' . $options['tag'] . '>';
 
 			return implode(' ', $render);
 		}
-
 
 	}

@@ -13,30 +13,30 @@
 	class AssetBuilder {
 
 		protected $assets = array();
+        protected $assetTypeManager;
 
-        public function __construct() {
+        public function __construct(AssetTypeManager $assetTypeManager) {
+            $this->assetTypeManager = $assetTypeManager;
         }
 
-		public function add($id, AssetInterface $object, array $parameters) {
+		public function add($id, $object, array $parameters) {
+
+            if (is_string($object)) {
+                if (!$this->assetTypeManager->has($object)) {
+                    throw new \Exception('AssetType not found for '.$object);
+                }
+                $object = $this->assetTypeManager->get($object);
+            } else if (!$object instanceof AssetTypeInterface) {
+                throw new \Exception($object.' is not AssetTypeInterface Class');
+            }
+
             $resolver = new OptionsResolver();
             $object->configureOptions($resolver);
             $options = $resolver->resolve($parameters);
-            $this->_addAssetToArray($id, new AssetItem($object, $options));
+            $object->mergeToAssetsArray($this->assets, $id, new Asset($object, $options));
+
 			return $this;
 		}
-
-
-        protected function _addAssetToArray($key, $asset) {
-            if (!isset($this->assets[$key])) {
-                $this->assets[$key] = $asset;
-            } elseif (is_array($this->assets[$key])) {
-                array_push($this->assets[$key], $asset);
-            } else {
-                $prevAsset = $this->assets[$key];
-                unset($this->assets[$key]);
-                $this->assets[$key] = array($prevAsset, $asset);
-            }
-        }
 
 
         public function getAssets() {

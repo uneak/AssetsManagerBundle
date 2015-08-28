@@ -10,10 +10,10 @@
 
 	use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
     use Symfony\Component\OptionsResolver\OptionsResolver;
-	use Uneak\AssetsManagerBundle\Assets\AssetInternal;
-    use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
+	use Uneak\AssetsManagerBundle\Assets\AssetTypeInternal;
+	use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
 
-    class AssetInternalCss extends AssetInternal {
+    class AssetTypeInternalCss extends AssetTypeInternal {
 
 		public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);

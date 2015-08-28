@@ -8,33 +8,36 @@
 
 	namespace Uneak\AssetsManagerBundle\Assets;
 
-	use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
-    use Symfony\Component\OptionsResolver\OptionsResolver;
-    use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
+	class Asset {
 
-    abstract class Asset implements AssetInterface {
+		protected $object;
+		protected $options;
 
-		public function configureOptions(OptionsResolver $resolver) {
-
-			$resolver->setDefined(array('tag', 'type', 'category', 'dependencies', 'parameters'));
-			$resolver->setRequired(array('tag', 'category'));
-
-			$resolver->setAllowedTypes('category', 'string');
-			$resolver->setAllowedTypes('tag', 'string');
-			$resolver->setAllowedTypes('dependencies', 'array');
-
-			$resolver->setDefaults(array(
-				'dependencies' => array(),
-				'parameters' => array(),
-			));
-
-
-
+		public function __construct(AssetTypeInterface $object, array $options) {
+            $this->object = $object;
+            $this->options = $options;
 		}
 
-		public function render(\Twig_Environment $twig, AssetsHelper $assetsHelper, TemplatesManager $templatesManager, array $options) {
-			return '';
-		}
+        /**
+         * @return AssetTypeInterface
+         */
+        public function getObject() {
+            return $this->object;
+        }
 
+        /**
+         * @return array
+         */
+        public function getOptions() {
+            return $this->options;
+        }
+
+        public function getCategory() {
+            return $this->options["category"];
+        }
+
+        public function getDependencies() {
+            return $this->options["dependencies"];
+        }
 
 	}

@@ -6,9 +6,10 @@
     use Symfony\Component\OptionsResolver\OptionsResolver;
     use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
 
-    interface AssetInterface {
+    interface AssetTypeInterface {
 
 		public function configureOptions(OptionsResolver $resolver);
+		public function mergeToAssetsArray(&$assets, $key, $asset);
 		public function render(\Twig_Environment $twig, AssetsHelper $assetsHelper, TemplatesManager $templatesManager, array $options);
 
 	}

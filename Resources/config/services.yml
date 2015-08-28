@@ -1,11 +1,15 @@
 parameters:
     uneak.assetsmanager.class: Uneak\AssetsManagerBundle\Assets\AssetsManager
+
     uneak.assetsmanager.twig.extension.class: Uneak\AssetsManagerBundle\Twig\Extension\AssetsManagerExtension
 
 services:
 
     uneak.assetsmanager:
         class: %uneak.assetsmanager.class%
+        arguments:
+            - @uneak.assettypemanager
+            - @service_container
 
     uneak.assetsmanager.twig.extension:
         class: %uneak.assetsmanager.twig.extension.class%
@@ -17,7 +21,6 @@ services:
 
         tags:
             - { name: twig.extension }
-
 
     twig.stringloader:
         class: Twig_Loader_String
