@@ -20,11 +20,9 @@
 		 */
 		public function load(array $configs, ContainerBuilder $container) {
 
-//			$processor = new Processor();
-//			$configuration = new Configuration();
-
-//			$config = $processor->processConfiguration($configuration, $configs);
-//			$container->setParameter('uneak.assets.manager.root_path', $config['root_path']);
+			$configuration = new Configuration();
+			$config = $this->processConfiguration($configuration, $configs);
+			$container->setParameter('uneak_assets', $config);
 
 			$loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 			$loader->load('services.yml');

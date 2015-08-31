@@ -20,6 +20,25 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('uneak_assetsmanager');
 
+        $rootNode
+            ->isRequired()
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('type')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
+                    ->booleanNode('build')->defaultFalse()->end()
+                    ->arrayNode('config')
+                        ->useAttributeAsKey('name')
+                        ->prototype('variable')->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
+
         return $treeBuilder;
     }
 }

@@ -9,7 +9,7 @@ services:
         class: %uneak.assetsmanager.class%
         arguments:
             - @uneak.assettypemanager
-            - @service_container
+            - %uneak_assets%
 
     uneak.assetsmanager.twig.extension:
         class: %uneak.assetsmanager.twig.extension.class%

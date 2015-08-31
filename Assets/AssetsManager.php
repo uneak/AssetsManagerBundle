@@ -9,25 +9,62 @@
 	namespace Uneak\AssetsManagerBundle\Assets;
 
 
-	use Symfony\Component\DependencyInjection\ContainerInterface;
 
 	class AssetsManager extends AssetsComponentNested {
 
 		protected $assetTypeManager;
-		protected $container;
+		protected $registredAssets = array();
+		protected $buildedAssets = array();
 
-		public function __construct(AssetTypeManager $assetTypeManager, ContainerInterface $container) {
+		public function __construct(AssetTypeManager $assetTypeManager, $configAssets) {
 			$this->assetTypeManager = $assetTypeManager;
-			$this->container = $container;
+			foreach ($configAssets as $id => $asset) {
+				$this->set($id, $asset, true);
+			}
 		}
 
-		public function buildAsset(AssetBuilder $builder, $parameters) {
-			$assetsConfig = $this->container->getParameter("uneak_assets_default");
-			if (isset($assetsConfig) && is_array($assetsConfig)) {
-				$assetsDefault = $this->_fetchConfig($assetsConfig);
-				foreach ($assetsDefault as $asset) {
-					$builder->add($asset['id'], $asset['type'], $asset['config']);
+
+		public function get($id) {
+			if (!$this->has($id)) {
+				// TODO lever une exeption
+			}
+			if (isset($this->buildedAssets[$id])) {
+				return $this->buildedAssets[$id];
+			} else if (isset($this->registredAssets[$id])) {
+				return $this->registredAssets[$id];
+			}
+			return null;
+		}
+
+		public function set($id, $asset, $override = true) {
+			if ($override || !$this->has($id)) {
+				if ($asset['build']) {
+					$this->buildedAssets[$id] = $asset;
+				} else {
+					$this->registredAssets[$id] = $asset;
 				}
+			}
+			return $this;
+		}
+
+		public function has($id) {
+			return (isset($this->buildedAssets[$id]) || isset($this->registredAssets[$id]));
+		}
+
+		public function remove($id) {
+			if (isset($this->buildedAssets[$id])) {
+				unset($this->buildedAssets[$id]);
+			} else if (isset($this->registredAssets[$id])) {
+				unset($this->registredAssets[$id]);
+			}
+			return $this;
+		}
+
+
+
+		public function buildAsset(AssetBuilder $builder, $parameters) {
+			foreach ($this->buildedAssets as $id => $asset) {
+				$builder->add($id, $asset['type'], $asset['config']);
 			}
 		}
 
