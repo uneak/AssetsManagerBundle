@@ -13,11 +13,6 @@
 
 		protected $assetstypes = array();
 
-//		public function newInstance($typeId, $id, $options) {
-//			$Class = $this->assetstypes[$typeId];
-//			$instance = new $Class()
-//		}
-
 		public function all() {
 			return $this->assetstypes;
 		}

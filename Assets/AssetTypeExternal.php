@@ -15,9 +15,7 @@
 
         public function configureOptions(OptionsResolver $resolver) {
 			parent::configureOptions($resolver);
-
 			$resolver->setDefined('class');
 		}
-
 
 	}

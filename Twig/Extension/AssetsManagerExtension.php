@@ -5,19 +5,19 @@
 	use Symfony\Component\DependencyInjection\ContainerInterface;
 	use Twig_Extension;
 	use Twig_Function_Method;
-	use Uneak\AssetsManagerBundle\Assets\AssetsManager;
+	use Uneak\AssetsManagerBundle\Assets\AssetsBuilderManager;
     use Uneak\TemplatesManagerBundle\Templates\TemplatesManager;
 
     class AssetsManagerExtension extends Twig_Extension {
 
 		private $twig;
 		private $environment;
-		private $assetsManager;
+		private $assetsBuilderManager;
         private $templatesManager;
 		private $container;
 
-		public function __construct(AssetsManager $assetsManager, TemplatesManager $templatesManager, $twig, ContainerInterface $container) {
-			$this->assetsManager = $assetsManager;
+		public function __construct(AssetsBuilderManager $assetsBuilderManager, TemplatesManager $templatesManager, $twig, ContainerInterface $container) {
+			$this->assetsBuilderManager = $assetsBuilderManager;
 			$this->templatesManager = $templatesManager;
 			$this->twig = $twig;
 			$this->container = $container;
@@ -37,11 +37,10 @@
 
 		public function renderAssetsFunction($category = null) {
 			$string = "";
-            $assets = $this->assetsManager->getAssetsArray($category);
+            $assets = $this->assetsBuilderManager->getAssets($category);
             $assetsHelper = $this->container->get('templating.helper.assets');
 
 			foreach ($assets as $asset) {
-
 				if (is_array($asset)) {
 					foreach ($asset as $assetItem) {
 						$string .= $assetItem->getObject()->render($this->twig, $assetsHelper, $this->templatesManager, $assetItem->getOptions());

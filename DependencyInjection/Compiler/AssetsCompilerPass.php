@@ -9,10 +9,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class AssetsCompilerPass implements CompilerPassInterface {
 
     public function process(ContainerBuilder $container) {
-        if ($container->hasDefinition('uneak.assetsmanager') === false || $container->hasDefinition('uneak.assettypemanager') === false) {
+        if ($container->hasDefinition('uneak.assetsbuildermanager') === false || $container->hasDefinition('uneak.assettypemanager') === false) {
             return;
         }
-        $assetsManagerDefinition = $container->getDefinition('uneak.assetsmanager');
+        $assetsManagerDefinition = $container->getDefinition('uneak.assetsbuildermanager');
         $assetTypeManagerDefinition = $container->getDefinition('uneak.assettypemanager');
 
         $assetsManagerTaggedServices = $container->findTaggedServiceIds('uneak.assetsmanager.assets');
@@ -21,7 +21,7 @@ class AssetsCompilerPass implements CompilerPassInterface {
         foreach ($assetsManagerTaggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
                 $assetsManagerDefinition->addMethodCall(
-					'addAssetsComponent', array(new Reference($id))
+					'addAssetsBuilder', array(new Reference($id))
                 );
             }
         }
