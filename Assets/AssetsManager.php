@@ -33,9 +33,17 @@
 		}
 
 		public function set($id, $assetArray, $override = true) {
-			if ($override || !$this->has($id)) {
-				$this->assets[$id] = $assetArray;
-			}
+
+            if ($this->has($id)) {
+                if ($override) {
+                    $assetArray['config'] = array_merge($this->assets[$id]['config'], $assetArray['config']);
+                } else {
+                    $assetArray['config'] = array_merge($assetArray['config'], $this->assets[$id]['config']);
+                }
+            }
+
+            $this->assets[$id] = $assetArray;
+
 			return $this;
 		}
 

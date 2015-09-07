@@ -47,6 +47,16 @@
             $options = $resolver->resolve($assetArray['config']);
             $assetArray['type']->mergeToAssetsArray($this->assets, $id, new Asset($assetArray['type'], $options));
 
+
+            if (isset($assetArray['config']['dependencies'])) {
+                foreach ($assetArray['config']['dependencies'] as $dependency) {
+                    if ($this->assetsManager->has($dependency)) {
+                        $registred = $this->assetsManager->get($dependency);
+                        $this->add($dependency, $registred['type'], $registred['config']);
+                    }
+                }
+            }
+
 			return $this;
 		}
 
