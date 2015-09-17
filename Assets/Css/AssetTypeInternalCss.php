@@ -51,7 +51,7 @@
 
 			} else if (isset($options['template'])) {
 
-                $template = ($templatesManager->has($options['template'])) ? $templatesManager->get($options['template']) : $options['template'];
+                $template = ($templatesManager->hasTemplate($options['template'])) ? $templatesManager->getTemplate($options['template']) : $options['template'];
 				return $twig->render($template, $options['parameters']);
 
 			}

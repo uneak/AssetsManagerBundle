@@ -35,8 +35,13 @@
         }
 
         public function processBuildAssets(AssetsBuilderManager $builder) {
+			if ($this->isAssetsBuilded()) {
+				return;
+			}
+
             $this->_processBuildSelfAsset($builder);
             $this->_processBuildChildAsset($builder);
+
 			$this->assetsBuilded = true;
         }
 	}

@@ -18,12 +18,12 @@
 		public function __construct(AssetTypeManager $assetTypeManager, $configAssets) {
 			$this->assetTypeManager = $assetTypeManager;
 			foreach ($configAssets as $id => $assetArray) {
-				$this->set($id, $assetArray, true);
+				$this->setAsset($id, $assetArray, true);
 			}
 		}
 
-		public function get($id) {
-			if (!$this->has($id)) {
+		public function getAsset($id) {
+			if (!$this->hasAsset($id)) {
 				// TODO lever une exeption
 			}
 			if (isset($this->assets[$id])) {
@@ -32,9 +32,9 @@
 			return null;
 		}
 
-		public function set($id, $assetArray, $override = true) {
+		public function setAsset($id, $assetArray, $override = true) {
 
-            if ($this->has($id)) {
+            if ($this->hasAsset($id)) {
                 if ($override) {
                     $assetArray['config'] = array_merge($this->assets[$id]['config'], $assetArray['config']);
                 } else {
@@ -47,15 +47,15 @@
 			return $this;
 		}
 
-		public function all() {
+		public function allAsset() {
 			return $this->assets;
 		}
 
-		public function has($id) {
+		public function hasAsset($id) {
 			return isset($this->assets[$id]);
 		}
 
-		public function remove($id) {
+		public function removeAsset($id) {
 			unset($this->assets[$id]);
 			return $this;
 		}

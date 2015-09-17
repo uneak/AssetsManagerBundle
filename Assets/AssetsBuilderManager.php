@@ -27,8 +27,8 @@
 
             $assetArray = array("type" => $type, "build" => true, "config" => $parameters);
 
-            if ($this->assetsManager->has($id)) {
-                $registred = $this->assetsManager->get($id);
+            if ($this->assetsManager->hasAsset($id)) {
+                $registred = $this->assetsManager->getAsset($id);
                 $assetArray['type'] = $registred['type'];
                 $assetArray['config'] = array_merge($assetArray['config'], $registred['config']);
             }
@@ -50,8 +50,8 @@
 
             if (isset($assetArray['config']['dependencies'])) {
                 foreach ($assetArray['config']['dependencies'] as $dependency) {
-                    if ($this->assetsManager->has($dependency)) {
-                        $registred = $this->assetsManager->get($dependency);
+                    if ($this->assetsManager->hasAsset($dependency)) {
+                        $registred = $this->assetsManager->getAsset($dependency);
                         $this->add($dependency, $registred['type'], $registred['config']);
                     }
                 }
@@ -92,25 +92,26 @@
 
         public function processBuildAssets(AssetsBuilderManager $builder) {
             if ($this->isAssetsBuilded()) {
-                return;
+//                return;
             }
-            parent::processBuildAssets($builder);
+
+
+
+
+            $this->_processBuildSelfAsset($builder);
+            $this->_processBuildChildAsset($builder);
+
+//            $this->assetsBuilded = true;
         }
 
         public function buildAsset(AssetsBuilderManager $builder, $parameters) {
-            if ($this->isAssetsBuilded()) {
-                return;
-            }
-
-            $assets = $this->assetsManager->all();
+            $assets = $this->assetsManager->allAsset();
             foreach ($assets as $id => $asset) {
                 if (isset($asset["build"]) && $asset["build"] === true) {
                     $builder->add($id, $asset['type'], $asset['config']);
                 }
             }
         }
-
-
 
 
 
