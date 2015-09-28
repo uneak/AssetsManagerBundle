@@ -90,18 +90,24 @@
         }
 
 
+        public function isAssetsBuilded() {
+            foreach ($this->assetsBuilders as $assetsBuilder) {
+                if (!$assetsBuilder->isAssetsBuilded()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
         public function processBuildAssets(AssetsBuilderManager $builder) {
             if ($this->isAssetsBuilded()) {
-//                return;
+                return;
             }
-
-
-
 
             $this->_processBuildSelfAsset($builder);
             $this->_processBuildChildAsset($builder);
 
-//            $this->assetsBuilded = true;
         }
 
         public function buildAsset(AssetsBuilderManager $builder, $parameters) {
